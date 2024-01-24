@@ -123,7 +123,7 @@ format = '\[[$symbol($version)]($style)\]'
 format = '\[[$symbol$branch]($style)\]'
 
 [hostname]
-format = '\[[$ssh_symbol$hostname]($style)\]'
+format = '\[[$ssh_symbol$hostname]($style)\] '
 
 [java]
 format = '\[[$symbol($version)]($style)\]'
@@ -221,7 +221,7 @@ format = '\[[$time]($style)\] '
 style = "bold #bf5700"
 
 [username]
-format = '\[[$user]($style)\] '
+format = '\[[$user]($style)\]'
 
 [vagrant]
 format = '\[[$symbol($version)]($style)\]'
