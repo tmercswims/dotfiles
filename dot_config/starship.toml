@@ -122,6 +122,9 @@ format = '\[[$symbol($version)]($style)\]'
 [hg_branch]
 format = '\[[$symbol$branch]($style)\]'
 
+[hostname]
+format = '\[[$ssh_symbol$hostname]($style)\]'
+
 [java]
 format = '\[[$symbol($version)]($style)\]'
 
