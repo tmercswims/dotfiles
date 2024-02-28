@@ -21,5 +21,5 @@ if status is-interactive
     end
 
     # make prompt transient
-    enable_transience
+    #enable_transience
 end
