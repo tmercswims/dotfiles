@@ -1,5 +1,4 @@
 jorgebucaran/fisher
-acomagu/fish-async-prompt
 decors/fish-colored-man
 franciscolourenco/done
 halostatue/fish-docker
@@ -9,3 +8,4 @@ jorgebucaran/nvm.fish
 kidonng/fishion
 laughedelic/fish_logo
 nickeb96/puffer-fish
+acomagu/fish-async-prompt@a89bf4216b65170e4c3d403e7cbf24ce34b134e6
