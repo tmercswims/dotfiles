@@ -270,7 +270,7 @@ abbr_subcommand_firstarg git d "--delete" branch
 abbr_subcommand git br browse
 
 abbr_subcommand git co checkout
-abbr_subcommand_arg git b "-b" checkout
+# abbr_subcommand_arg git b "-b" checkout
 abbr_subcommand git cob "checkout -b"
 
 abbr_subcommand git c commit
@@ -330,7 +330,6 @@ abbr_subcommand yarn b build
 abbr_subcommand yarn l lint
 
 abbr_subcommand yarn t test
-abbr_subcommand_arg yarn c "--code-coverage" test
 
 abbr_subcommand yarn ui upgrade-interactive
 
