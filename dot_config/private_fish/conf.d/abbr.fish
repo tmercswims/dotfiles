@@ -276,13 +276,13 @@ abbr_subcommand_firstarg git d --delete branch
 abbr_subcommand git br browse
 
 abbr_subcommand git co checkout
-# abbr_subcommand_arg git b "-b" checkout
+abbr_subcommand_arg git b "-b" checkout
 abbr_subcommand git cob "checkout -b"
 
 abbr_subcommand git c commit
 abbr_subcommand_arg git m --message commit
 abbr_subcommand_arg git n --no-verify commit
-# abbr_subcommand_arg git a "--amend" commit
+abbr_subcommand_arg git a "--amend" commit
 abbr_subcommand_arg git r "--reuse-message HEAD"
 abbr_subcommand git cm "commit --message"
 abbr_subcommand git car "commit --amend --reuse-message HEAD"
