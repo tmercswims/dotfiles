@@ -1,7 +1,7 @@
 ### Abbrevation definition helpers
 # source:
 # https://github.com/lgarron/dotfiles/blob/main/dotfiles/fish/.config/fish/abbr.fish
-# (last grabbed 9/29/23)
+# (last grabbed 5/10/23)
 # See also:
 # https://github.com/fish-shell/fish-shell/issues/9411#issuecomment-1738958450
 
@@ -46,7 +46,7 @@ function _abbr_expand_anyarg
     # set -l command_abbreviation $argv[2] # unused
     set -l expansion $argv[3]
     set -l cmd (commandline -op)
-    if [ "$cmd[1]" = $main_command ]
+    if test "$cmd[1]" = $main_command
         echo $expansion
         return 0
     end
@@ -78,9 +78,13 @@ function _abbr_expand_subcommand
     set -l sub_command_abbreviation $argv[2]
     set -l expansion $argv[3]
     set -l cmd (commandline -op)
-    if [ "$cmd[1]" = $main_command -a (count $cmd) -eq 2 -a "$cmd[2]" = $sub_command_abbreviation ]
-        echo $expansion
-        return 0
+    if string match -e -- "$cmd[1]" "$main_command" >/dev/null
+        if test (count $cmd) -eq 2
+            if string match -e -- "$cmd[2]" "$sub_command_abbreviation" >/dev/null
+                echo $expansion
+                return 0
+            end
+        end
     end
     return 1
 end
@@ -117,9 +121,9 @@ function _abbr_expand_subcommand_arg
     set -l main_command $argv[1]
     # set -l arg_abbreviation $argv[2] # unused
     set -l arg_expansion $argv[3]
-    set -l sub_commands $argv[4..-1]
+    set -l sub_commands $argv[4..-2]
     set -l cmd (commandline -op)
-    if [ "$cmd[1]" = $main_command ]
+    if string match -e -- "$cmd[1]" "$main_command" >/dev/null
         if contains -- "$cmd[2]" $sub_commands
             echo $arg_expansion
             return 0
@@ -146,11 +150,11 @@ function _abbr_expand_subcommand_firstarg
     set -l main_command $argv[1]
     set -l arg_abbreviation $argv[2]
     set -l arg_expansion $argv[3]
-    set -l sub_commands $argv[4..-1]
+    set -l sub_commands $argv[4..-2]
     set -l cmd (commandline -op)
-    if [ "$cmd[1]" = $main_command ]
-        if [ (count $cmd) = 3 ]
-            if [ "$cmd[3]" = $arg_abbreviation ]
+    if string match -e -- "$cmd[1]" "$main_command" >/dev/null
+        if test (count $cmd) = 3
+            if string match -e -- "$cmd[3]" "$arg_abbreviation" >/dev/null
                 if contains -- "$cmd[2]" $sub_commands
                     echo $arg_expansion
                     return 0
@@ -192,7 +196,7 @@ end
 
 # Convenience
 function abbr_anysubcommand_arg
-    if [ (count $argv) -gt 3 ]
+    if test (count $argv) -gt 3
         echo "ERROR: abbr_anysubcommand_arg does not take denylist arguments"
         return 1
     end
@@ -203,12 +207,14 @@ function _abbr_expand_exceptsubcommand_arg
     set -l main_command $argv[1]
     # set -l arg_abbreviation $argv[2] # unused
     set -l arg_expansion $argv[3]
-    set -l excluded_sub_commands $argv[4..-1]
+    set -l excluded_sub_commands $argv[4..-2]
     set -l cmd (commandline -op)
-    if [ "$cmd[1]" = $main_command -a (count $cmd) -gt 2 ]
-        if not contains -- "$cmd[2]" $excluded_sub_commands
-            echo $arg_expansion
-            return 0
+    if string match -e -- "$cmd[1]" "$main_command" >/dev/null
+        if test (count $cmd) -gt 2
+            if not contains -- "$cmd[2]" $excluded_sub_commands
+                echo $arg_expansion
+                return 0
+            end
         end
     end
     return 1
@@ -216,10 +222,10 @@ end
 
 # 🪄 Currying ✨
 
-set CURRY_COUNTER 1
+set _CURRY_COUNTER 1
 function _curry
-    set -l CURRIED_FN "_curried_fn_$CURRY_COUNTER"
-    set CURRY_COUNTER (math $CURRY_COUNTER + 1)
+    set -l CURRIED_FN "_curried_fn_$_CURRY_COUNTER"
+    set _CURRY_COUNTER (math $_CURRY_COUNTER + 1)
 
     set -l INHERITED_ARGS $argv
     function "$CURRIED_FN" --inherit-variable INHERITED_ARGS
@@ -254,7 +260,7 @@ abbr_subcommand docker r run
 abbr --add g git
 
 abbr_subcommand git a add
-abbr_subcommand_arg git p "--patch" add
+abbr_subcommand_arg git p --patch add
 abbr_subcommand git ap "add --patch"
 
 abbr_subcommand git bi bisect
@@ -264,8 +270,8 @@ abbr_subcommand_firstarg git r bisect
 abbr_subcommand_firstarg git s start bisect
 
 abbr_subcommand git b branch
-abbr_subcommand_firstarg git m "--move" branch
-abbr_subcommand_firstarg git d "--delete" branch
+abbr_subcommand_firstarg git m --move branch
+abbr_subcommand_firstarg git d --delete branch
 
 abbr_subcommand git br browse
 
@@ -274,15 +280,15 @@ abbr_subcommand git co checkout
 abbr_subcommand git cob "checkout -b"
 
 abbr_subcommand git c commit
-abbr_subcommand_arg git m "--message" commit
-abbr_subcommand_arg git n "--no-verify" commit
+abbr_subcommand_arg git m --message commit
+abbr_subcommand_arg git n --no-verify commit
 # abbr_subcommand_arg git a "--amend" commit
 abbr_subcommand_arg git r "--reuse-message HEAD"
 abbr_subcommand git cm "commit --message"
 abbr_subcommand git car "commit --amend --reuse-message HEAD"
 
 abbr_subcommand git cp cherry-pick
-abbr_subcommand_firstarg git c "--continue" cherry-pick
+abbr_subcommand_firstarg git c --continue cherry-pick
 
 abbr_subcommand git cl clone
 
@@ -292,23 +298,23 @@ abbr_subcommand git last "log -1 HEAD"
 abbr_subcommand git lg "log --oneline"
 
 abbr_subcommand git m merge
-abbr_subcommand_firstarg git c "--continue" merge
+abbr_subcommand_firstarg git c --continue merge
 
 abbr_subcommand git pll pull
-abbr_subcommand_arg git f "--force" pull
+abbr_subcommand_arg git f --force pull
 
 abbr_subcommand git psh push
-abbr_subcommand_arg git f "--force" push
-abbr_subcommand_arg git n "--no-verify" push
-abbr_subcommand_arg git t "--tags" push
+abbr_subcommand_arg git f --force push
+abbr_subcommand_arg git n --no-verify push
+abbr_subcommand_arg git t --tags push
 
 abbr_subcommand git rb rebase
-abbr_subcommand_firstarg git c "--continue" rebase
-abbr_subcommand_firstarg git i "--interactive" rebase
+abbr_subcommand_firstarg git c --continue rebase
+abbr_subcommand_firstarg git i --interactive rebase
 
 abbr_subcommand git rs reset
-abbr_subcommand_arg git h "--hard" reset
-abbr_subcommand_arg git s "--soft" reset
+abbr_subcommand_arg git h --hard reset
+abbr_subcommand_arg git s --soft reset
 
 abbr_subcommand git st stash
 abbr_subcommand_firstarg git p pop stash
