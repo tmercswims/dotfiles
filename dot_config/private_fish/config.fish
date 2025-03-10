@@ -13,13 +13,11 @@ if status is-interactive
         starship module time
     end
 
-    # starship init fish | source
-
     # custom greeting message
     function fish_greeting
         fish_logo (random_color) (random_color) (random_color)
     end
 
     # make prompt transient
-    #enable_transience
+    enable_transience
 end
