@@ -1,7 +1,7 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '''$all$fill$cmd_duration$time$line_break$character'''
+format = '''$all$fill$battery$cmd_duration$time$line_break$character'''
 
 add_newline = true
 
@@ -9,6 +9,9 @@ command_timeout = 2000
 
 [aws]
 format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+
+[battery]
+format = '\[[$symbol$percentage]($style)\]'
 
 [bun]
 format = '\[[$symbol($version)]($style)\]'
